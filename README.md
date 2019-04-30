@@ -13,7 +13,7 @@ The output file will be a ready-to-analyze XML file wherein each individual is s
 - haplotype.txt **LINK** is a list of the haplotypes of each individual in the fasta
 - output.xml is the output xml file that can be analyzed by BEAST
 
-**NOTE: this code generates and XML file with priors specific to Helianthus dating. For other lineages, the perl file would need to be modified, or XMLs can be generated from fastas using [BEAUti](https://github.com/CompEvol/beast2/tree/master/src/beast/app/beauti)**
+**NOTE: this code generates an XML file with priors specific to Helianthus dating. For other lineages, the perl file would need to be modified, or XMLs can be generated from fastas using [BEAUti](https://github.com/CompEvol/beast2/tree/master/src/beast/app/beauti)**
 
 An example output XML can be found here **LINK**.
 
