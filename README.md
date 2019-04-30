@@ -10,4 +10,4 @@ For each comparison in SNAPP, individuals from populations polymorphic for the i
 
 3. XMLs can be analyzed in SNAPP, which outputs a log file. Log files can be checked in [Tracer](https://github.com/beast-dev/tracer) to ensure the SNAPP analysis had a high effective sample size and that the traces from the log file converge properly. 
 
-4. Log files are then converted to csv files and analyzed in R using the following code **LINK**. Divergence time is calibrated using SNAPP runs from SNP data outside the inverted regions of species with known divergence times. **LINK to .csv of Ann/Arg run** 
+4. Using this log file, a [divergence time can be estimated against SNAPP runs of *Helianthus* sequences with known divergence times](https://github.com/katlande/Helianthus_Inversions_Dating/tree/master/output_analysis). 
