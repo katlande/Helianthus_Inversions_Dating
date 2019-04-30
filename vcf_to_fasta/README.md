@@ -1,4 +1,4 @@
-##Convert your VCF into a fasta
+**Convert your VCF into a fasta**
 
 Using a VCF of biallelic SNPs from the inverted region of the genome, a fasta file can be made using the [vcf2fasta perl script](https://github.com/katlande/Helianthus_Inversions_Dating/blob/master/vcf_to_fasta/vcf2fasta.pl) made by [Greg Owens](https://github.com/owensgl/wild_gwas_2018/blob/master/perl_tools/vcf2fasta_basic.pl). 
 
