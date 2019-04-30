@@ -10,4 +10,4 @@ The output file will be a ready-to-analyze XML file wherein each individual is s
 - 500fasta2SNAPPxml.pl requires the files in the folder [fasta2SNAPPxml_dependencies](https://github.com/katlande/Helianthus_Inversions_Dating/tree/master/fasta_to_xml/fasta2SNAPPxml_dependencies) in order to function.
 
 **NOTE: this code generates an XML file with priors specific to Helianthus dating. For other lineages, the perl file *500fasta2SNAPPxml.pl***
-**would need to be modified, or XMLs can be generated from fastas using**
+**would need to be modified**
