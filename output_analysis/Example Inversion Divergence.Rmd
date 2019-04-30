@@ -1,0 +1,96 @@
+---
+title: "Example Inversion Divergence"
+author: "Kathryn Lande"
+date: "4/30/2019"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Necessary Packages:
+
+#library(ggplot2)
+#library(tidyverse)
+#library(reshape2)
+#library(ggpubr)
+
+```{r}
+#Load example and control SNAPP data into R
+
+example <- read.csv("example.csv")
+example["Inversion"] <- "example"
+example["Species"] <- "Argophyllus"
+
+control <- read.csv("Annuus_Argophylus_Control.csv")
+control["Inversion"] <- "Ann/Arg Divergence"
+control["Species"] <- "Annuus + Argophyllus"
+control <- control %>% filter(TreeHeightLogger > 0.01)
+
+All <- rbind(control,example) #Create one dataframe with all samples
+
+All$Height <- All$TreeHeightLogger/(mean(control$TreeHeightLogger))
+#Create a new column that calibrates the divergence time of H. annuus
+# and H. argophyllus to 1 (MYA)
+```
+
+
+```{r}
+g <- ggboxplot(All, x = "Inversion", y = "TreeHeightLogger",
+               color = "Species", palette = "jco", add = "mean", 
+               axis.text=element_text(size=1), outlier.shape = NA)+
+  stat_compare_means(method = "anova", label.y = -5)+     
+  stat_compare_means(label = "p.signif",
+                     ref.group = "Ann/Arg Divergence")+
+  ggtitle("Example Inversion Age")+
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), axis.text=element_text(size=6), axis.title=element_text(size=9, face="bold")) #Create a boxplot to display inversion age and variance
+
+f <- (g+ labs(y = "Age (MYA)", x = "Inversion"))
+f <- (f + grids(linetype = "dashed"))
+f <- f + rotate_x_text(90)
+f <- (f + geom_hline(yintercept=1, linetype="dashed", color = "blue", alpha=0.2))
+
+print(f + ylim(0,2.5))
+```
+
+
+```{r}
+#Calculate the 5% and 95% quantiles of each inversion, for confidence
+# intervals
+example_95 <- quantile(example$TreeHeightLogger, .95)
+example_95 <- example_95 %>% as.data.frame()
+example_95$Inversion<-"example"
+example_05 <- quantile(example$TreeHeightLogger, .05)
+example_05 <- example_05 %>% as.data.frame()
+example_05$Inversion<-"example"
+
+control_95 <- quantile(control$TreeHeightLogger, .95)
+control_95 <- control_95 %>% as.data.frame()
+control_95$Inversion<-"Ann/Arg Divergence"
+control_05 <- quantile(control$TreeHeightLogger, .05)
+control_05 <- control_05 %>% as.data.frame()
+control_05$Inversion<-"Ann/Arg Divergence"
+
+#Combine quantile information into a single table:
+
+All_05 <- rbind(control_05,example_05)
+All_95 <- rbind(control_95,example_95)
+
+All_95$Max_MYA<-(All_95$.*(1/mean(control$TreeHeightLogger)))
+All_95 <- All_95[-c(1)]
+All_05$Min_MYA<-((1/mean(control$TreeHeightLogger))*All_05$.)
+All_05 <- All_05[-c(1)]
+
+mean.table<-aggregate(TreeHeightLogger ~ ., median, data = All[c(8,9)])
+mean.table$median_MYA<-((1/mean(control$TreeHeightLogger))*mean.table$TreeHeightLogger)
+
+mean.table2 <- left_join(mean.table, All_05, by = "Inversion")
+mean.table2 <- left_join(mean.table2, All_95, by = "Inversion")
+
+mean.table2$interval <- (mean.table2$Max_MYA - mean.table2$Min_MYA)/2
+print(mean.table2) #View the confidence intervals of the inversion age
+```
+
